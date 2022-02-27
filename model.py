@@ -1,9 +1,10 @@
 import logging
-import os
 import time
 
 import numpy as np
+import pandas as pd
 from sklearn.base import BaseEstimator
+from catboost import CatBoostClassifier
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -13,14 +14,13 @@ np.random.seed(seed=0)
 class CatBoostTransformer(BaseEstimator):
     def __init__(self, pipe_feature_engineering):
         self.pipe_feature_engineering = pipe_feature_engineering
+        self.model = CatBoostClassifier(
+            iterations=2,
+            verbose=1,
+        )
 
-    def fit(self, df, y=None, verbose=True):
+    def fit(self, feature, target=None, verbose=True):
         logger.info("Apply feature engineering pipe to training dataframe...")
-        feature = self.pipe_feature_engineering.fit_transform(df, y)
-        feature = feature.tocsc()  
-        logger.info("Input shape: %s", feature.shape)
-        logger.info("Training model %s ...", self.name)
-        target = y
         start = time.time()
         self.model.fit(feature, target, verbose=verbose)
         logger.info("Training model took %s seconds", time.time() - start)
@@ -28,10 +28,11 @@ class CatBoostTransformer(BaseEstimator):
 
     def predict(self, df):
         logger.debug("Apply feature engineering pipe to dataframe...")
-        feature = self.pipe_feature_engineering.transform(df)
+        feature, _ = self.pipe_feature_engineering.transform(df)
         logger.debug("Predict from model...")
         predictions = self.model.predict(feature)
-        return predictions.tolist()
+        predictions = pd.DataFrame(data=predictions, columns=['predictions'])
+        return predictions
 
 
 

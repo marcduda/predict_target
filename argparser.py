@@ -9,26 +9,21 @@ project_argparser.add_argument(
     dest="out_directory",
     default=".",
 )
-'''
-project_argparser.add_argument(
-    "--cross_val",
-    dest="cross_val",
-    default=False,
-)
-'''
+
 project_argparser.add_argument(
     "--train_full_model",
     dest="train_full_model",
+    action="store_true",
     default=False,
 )
 project_argparser.add_argument(
-    "--input-file",
+    "--input_file",
     dest="input_file",
     default="train_technical_test.csv"
 )
 
 project_argparser.add_argument(
-    "--previous-accuracy",
+    "--previous_accuracy",
     dest="previous_accuracy",
     default=0,
 )
@@ -36,11 +31,17 @@ project_argparser.add_argument(
 project_argparser.add_argument(
     "--predict",
     dest="predict",
+    action="store_true",
     default=False,
 )
 
 project_argparser.add_argument(
-    "--test-file",
+    "--test_file",
     dest="test_file",
     default="test_technical_test.csv",
+)
+
+project_argparser.add_argument(
+    "--model_file",
+    dest="model_file",
 )

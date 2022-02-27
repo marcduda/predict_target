@@ -24,14 +24,15 @@ class ToTimestampTransformer(TransformerMixin):
 
 
 class ConstantValueImputer(TransformerMixin):
-    def __init__(self, dict_values={time_features: datetime.strptime(str(19700101), '%Y%m%d'), cat_features: '', num_features:0}):
+    def __init__(self, dict_values=dict_values):
+
         self.dict_values = dict_values
 
     def fit(self, X, y=None):
         return self
 
     def transform(self, df):
-        for features_group, value in self.dict_values.items():
+        for features_group, value in self.dict_values.values():
             df[features_group] = df[features_group].fillna(value)
         return df
 

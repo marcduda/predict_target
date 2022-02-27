@@ -1,3 +1,5 @@
+from datetime import datetime
+
 cat_features = [
        'brand', 'model_code', 'model_label',
        'commercial_label',  'article_main_category', 'article_type',
@@ -14,6 +16,11 @@ num_features = [
        'eco_participation', 'eco_furniture', 'multiple_of_order',
        'minimum_multiple_of_order', 'net_weight', 'raw_weight', 'volume',
 ]
+
+dict_values = {'time': (time_features, datetime.strptime(str(19700101), '%Y%m%d')),
+               'categorical': (cat_features, ''),
+               'numerical': (num_features, 0)
+               }
 
 target_column = 'correct_fedas_code'
 
