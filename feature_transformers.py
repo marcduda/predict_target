@@ -9,6 +9,17 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
+class MakeCopyTransformer(TransformerMixin):
+    def __init__(self):
+        pass
+
+    def fit(self, df, y=None):
+        return self
+
+    def transform(self, df):
+        return df.copy()
+
+
 class ToTimestampTransformer(TransformerMixin):
     def __init__(self, cols=time_features):
         self.columns = cols

@@ -9,6 +9,7 @@ import os
 from model import CatBoostTransformer
 from argparser import project_argparser
 from pipelines import pipeline
+from sklearn.metrics import accuracy_score
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -50,7 +51,14 @@ if __name__ == '__main__':
         model.fit(features, target)
         out_path = os.path.join(out_directory, "model.joblib")
         logger.info("Model fitted. Exporting to {}".format(out_path))
-        export_pickle(model, out_path)
+        if previous_accuracy is not None:
+            #TODO find a better way to evaluate the accuracy
+            y_pred = model.predict(df_raw)
+            current_accuracy = accuracy_score(y_pred, target)
+            if float(previous_accuracy) <= current_accuracy:
+                export_pickle(model, out_path)
+            else:
+                logger.info("The new trained model didn't performed as good as a previous one so it is not saved")
     if predict:
         if test_file is not None:
             if model_file:

@@ -25,7 +25,7 @@ project_argparser.add_argument(
 project_argparser.add_argument(
     "--previous_accuracy",
     dest="previous_accuracy",
-    default=0,
+    default=None,
 )
 
 project_argparser.add_argument(
