@@ -20,6 +20,12 @@ random.seed(10002)
 
 
 def export_pickle(pickle_object, path):
+    """
+    save the pickle object in a path
+    :param pickle_object: pickle object to be saved
+    :param path: path to where to save the object
+    :return: Nothing
+    """
     directory = os.path.dirname(path)
     if not os.path.exists(directory):
         os.makedirs(directory)

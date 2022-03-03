@@ -17,6 +17,10 @@ class MakeCopyTransformer(TransformerMixin):
         return self
 
     def transform(self, df):
+        """
+        :param df: Dataframe to be copied
+        :return: copied Dataframe
+        """
         return df.copy()
 
 
@@ -28,6 +32,11 @@ class ToTimestampTransformer(TransformerMixin):
         return self
 
     def transform(self, df):
+        """
+        change the values of selected columns to datetime format
+        :param df: Dataframe on which to apply changes
+        :return: Dataframe with the columns changed
+        """
         for c in self.columns:
             if c in list(df.columns):
                 df[c] = df[c].apply(lambda x: datetime.strptime(str(int(x)), '%Y%m%d') if not pd.isna(x) else x)
@@ -43,6 +52,11 @@ class ConstantValueImputer(TransformerMixin):
         return self
 
     def transform(self, df):
+        """
+        fill the missing values with a constant
+        :param df: Dataframe on which to apply changes
+        :return: Dataframe with missing values imputed
+        """
         for features_group, value in self.dict_values.values():
             df[features_group] = df[features_group].fillna(value)
         return df
@@ -56,6 +70,11 @@ class ChangeTypeToInt(TransformerMixin):
         return self
 
     def transform(self, df):
+        """
+        change the values of selected columns to int format
+        :param df: Dataframe on which to apply changes
+        :return: Dataframe with the columns changed
+        """
         df[self.columns] = df[self.columns].astype('int64') // 10 ** 9 // 100
         return df
 
@@ -68,6 +87,11 @@ class KeepColumnsTransformer(TransformerMixin):
         return self
 
     def transform(self, df):
+        """
+        select a sub-Dataframe with only some columns
+        :param df: Dataframe on which to apply changes
+        :return: Dataframe with only some columns kept
+        """
         return df[self.columns_to_keep]
 
 
@@ -79,6 +103,11 @@ class SplitFeaturesTargetTransformer(TransformerMixin):
         return self
 
     def transform(self, df):
+        """
+        split the Dataframe into a Dataframe of features and a Series for the target
+        :param df: Dataframe on which to apply changes
+        :return: a tuple of (feature as a Dataframe, target as Series)
+        """
         target = df[self.target_column]
         features = df.drop(self.target_column, 1)
         return features, target
